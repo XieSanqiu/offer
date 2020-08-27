@@ -1,5 +1,7 @@
 package sword;
 
+import common.TreeNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
@@ -125,6 +127,21 @@ public class Day2 {
         char tmp = chars[i];
         chars[i] = chars[j];
         chars[j] = tmp;
+    }
+
+    /**
+     * 二叉搜索树第k小节点
+     * @param pRoot
+     * @param k
+     * @return
+     */
+    private int cnt;
+    TreeNode KthNode(TreeNode pRoot, int k){
+        if(pRoot == null) return null;
+        TreeNode node = KthNode(pRoot.left, k);
+        if(node != null) return node;
+        if(++cnt == k) return pRoot;
+        return KthNode(pRoot.right, k);
     }
 
     public static void main(String[] args) {
