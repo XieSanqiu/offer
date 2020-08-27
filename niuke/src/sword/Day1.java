@@ -84,6 +84,21 @@ public class Day1 {
     }
 
     /**
+     * f(n, m) = (m % n + x) % n = (m + x) % n
+     * x:就是n-1情况下的解，n-1情况还是从第一个开始算的
+     * o o x o o     x=3 n=5 m=3
+     * o o x o       x=1 n=4 m=3
+     * @param n
+     * @param m
+     * @return
+     */
+    public int LastRemaining_Solution(int n, int m) {
+        if(n <= 0) return -1;
+        if(n == 1) return 0;
+        int x = LastRemaining_Solution(n-1, m);
+        return (x + m) % n;
+    }
+    /**
      * f[1] = 0
      * f[2] = (f[1] + m) % 2
      * f[3] = (f[2] + m) % 3
@@ -93,7 +108,7 @@ public class Day1 {
      * @param m
      * @return
      */
-    public int LastRemaining_Solution(int n, int m) {
+    public int LastRemaining_Solution2(int n, int m) {
         if(n <= 0) return -1;
         int index = 0;
         for(int i = 2; i <= n; i++){
@@ -107,3 +122,5 @@ public class Day1 {
         System.out.print(day1.Add(13, 7));
     }
 }
+
+
