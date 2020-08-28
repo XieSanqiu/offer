@@ -144,6 +144,80 @@ public class Day2 {
         return KthNode(pRoot.right, k);
     }
 
+    /**
+     * 和为S的两个数字：两边夹
+     * @param array
+     * @param sum
+     * @return
+     */
+    public ArrayList<Integer> FindNumbersWithSum(int [] array,int sum) {
+        int start = 0, end = array.length-1;
+        ArrayList<Integer> res = new ArrayList<>();
+        while (start < end){
+            int curSum = array[start] + array[end];
+            if(curSum == sum){
+                res.add(array[start]);
+                res.add(array[end]);
+                return res;
+            }else if(curSum > sum){
+                end--;
+            }else {
+                start++;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 和为S的连续正数序列：一头双跑
+     * @param sum
+     * @return
+     */
+    public ArrayList<ArrayList<Integer> > FindContinuousSequence(int sum) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        int low = 1, high = 2;
+        while (low < high){
+            int cumSum = ((low + high) * (high - low + 1)) / 2;
+            if (cumSum == sum){
+                ArrayList<Integer> oneRes = new ArrayList<>();
+                for (int i = low; i <= high; i++){
+                    oneRes.add(i);
+                }
+                res.add(oneRes);
+                low++;
+            }else if (cumSum < sum){
+                high++;
+            }else {
+                low++;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 数组中只出现一次的数字
+     * @param array
+     * @param num1
+     * @param num2
+     */
+    public void FindNumsAppearOnce(int [] array,int num1[] , int num2[]) {
+        int diff = 0;
+        for(int n: array){
+            diff ^= n;
+        }
+        diff &= -diff;
+        int n1 = 0, n2 = 0;
+        for(int n: array){
+            if((n & diff) == 0){
+                n1 ^= n;
+            }else {
+                n2 ^= n;
+            }
+        }
+        num1[0] = n1;
+        num2[0] = n2;
+    }
+
     public static void main(String[] args) {
         Day2 day2 = new Day2();
         System.out.println(day2.maxInWindows(new int[]{2, 3, 4, 2, 6, 2, 5, 1}, 3));
