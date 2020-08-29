@@ -170,20 +170,28 @@ public class Day3 {
 
     /**
      * 最长不含重复字符的子字符串
+     * 采用动态规划，首先定义函数f(i)表示以第i个字符为结尾的不包含重复字符的子字符串的最长长度,则有一下三种情形
+     * 1）第i个字符在之前都没有出现过，则f(i) = f(i-1)+1
+     * 2）第i个字符在之前出现过，但是在f(i-1)这个子串的前面出现过，则最长还是f(i-1)+1
+     * 3）第i个字符在之前出现过，不过在f(i-1)的这个子串的中间出现过，则f(i)=这两个重复字符的中间值
+     * demo: "arabcacfr"
      * @param str
      * @return
      */
     public int longestSubStringWithoutDuplication(String str) {
-        int curLen = 0;
+        int curLen = 0; //所以curLen就是f(i)
         int maxLen = 0;
         int[] preIndexes = new int[26];
         Arrays.fill(preIndexes, -1);
         for (int curIndex = 0; curIndex < str.length(); curIndex++) {
             int c = str.charAt(curIndex) - 'a';
             int preIndex = preIndexes[c];
+            //如果在之前没出现过，或者出现过但是在前一个不重复子串的前面
+            //因为当前的最长子串是acf，而r前一次出现还是在这个子串之前，所以还是等于子串加1
             if(preIndex == -1 || curIndex - preIndex > curLen) {
                 curLen++;
             } else {
+                //因为在不重复子串之间，所以当前字符不重复的最长子串为两个字符之间i-prevIndex
                 maxLen = Math.max(maxLen, curLen);
                 curLen = curIndex - preIndex;
             }
@@ -191,5 +199,29 @@ public class Day3 {
         }
         maxLen = Math.max(maxLen, curLen);
         return maxLen;
+    }
+    public int longestSubStringWithoutDuplication2(String str) {
+        int[] posIndexes = new int[26];
+        Arrays.fill(posIndexes, -1);
+        int curLen = 0, maxLen = 0;
+        for(int curIndex = 0; curIndex < str.length(); curIndex++) {
+            int c = str.charAt(curIndex) - 'a';
+            int preIndex = posIndexes[c];
+            if(preIndex == -1 || curIndex - preIndex > curLen) {
+                curLen++;
+            }else {
+                maxLen = Math.max(maxLen, curLen);
+                curLen = curIndex - preIndex;
+            }
+            posIndexes[c] = curIndex;
+        }
+        maxLen = Math.max(maxLen, curLen);
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        Day3 day3 = new Day3();
+        String str = "arabcacfr";
+        System.out.println(day3.longestSubStringWithoutDuplication(str));
     }
 }
