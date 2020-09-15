@@ -1,8 +1,5 @@
 package singleton;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
 /**
  * 双重校验锁——线程安全
  */
